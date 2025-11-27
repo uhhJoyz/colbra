@@ -1,1 +1,1 @@
-Simulation infrastructure to evaluate the performance of device-aware mapping.
+Simulation infrastructure to evaluate the performance of device-aware mapping in the MapReduce algorithm.
