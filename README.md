@@ -17,8 +17,8 @@ On MacOS:
 cat ./scripts/setup.sh | sh
 brew install colima docker
 colima start
-docker build -t colbranch .
-docker run colbranch
+docker build -t colbra .
+docker run colbra
 ```
 
 Linux:
@@ -26,8 +26,8 @@ Linux:
 cat ./scripts/setup.sh | sh
 sudo apt install -y colima docker-ce docker-ce-cli
 colima start
-docker build -t colbranch .
-docker run colbranch
+docker build -t colbra .
+docker run colbra
 ```
 
 Windows:

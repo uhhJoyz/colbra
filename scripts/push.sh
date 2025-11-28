@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ -z DOCKER_IMG ]]; then
-    export DOCKER_IMG=colbr:latest
+    export DOCKER_IMG=colbra:latest
     echo "DOCKER_IMG env var not set, using default: ${DOCKER_IMG}"
 fi
 
