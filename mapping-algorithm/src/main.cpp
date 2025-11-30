@@ -52,12 +52,6 @@ int main(int argc, char *argv[])
     std::cout << "Machine: " << machines[i] << std::endl;
   }
 
-  size_t args[2] = {16, (size_t)&partition_bounds};
-  for (u32 i = 0; i < 8; i++)
-  {
-    std::cout << partition_bounded_map((unsigned char *)hashes[i].data(), (void *)args) << std::endl;
-  }
-
   std::vector<long double> weights = initial_weights(16);
   std::vector<u32> runtimes = {225, 180, 150, 200, 175, 190, 160, 20,
                                10, 195, 170, 155, 205, 215, 220, 230};
