@@ -26,10 +26,10 @@ def fit_df(sizes, times, name=None):
 
 if __name__ == "__main__":
   if len(sys.argv) != 2:
-    fit_duo(*read_series(pd.read_csv("results/pim/pim_vec_add.csv", header=0)))
-    fit_duo(*read_series(pd.read_csv("results/pim/pim_vec_dot.csv", header=0)))
-    fit_duo(*read_series(pd.read_csv("results/pim/pim_mat_vec.csv", header=0)))
-    fit_duo(*read_series(pd.read_csv("results/pim/pim_mat_mat.csv", header=0)))
+    fit_duo(*read_series(pd.read_csv("../results/pim/pim_vec_add.csv", header=0)))
+    fit_duo(*read_series(pd.read_csv("../results/pim/pim_vec_dot.csv", header=0)))
+    fit_duo(*read_series(pd.read_csv("../results/pim/pim_mat_vec.csv", header=0)))
+    fit_duo(*read_series(pd.read_csv("../results/pim/pim_mat_mat.csv", header=0)))
   else:
-    df = pd.read_csv(sys.argv[1], header=False)
+    fit_duo(*read_series(pd.read_csv(sys.argv[1], header=False)))
 
