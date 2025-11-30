@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import torch
 
+BENCH_NUM = 2048
+
 if torch.cuda.is_available():
     device = torch.device("cuda")
     sync = torch.cuda.synchronize
@@ -33,10 +35,11 @@ for n in sizes:
     b_cpu = torch.rand(n, dtype=torch.float32, device="cpu")
 
     start = time.perf_counter()
-    c_cpu = a_cpu + b_cpu
+    for i in range(0, BENCH_NUM):
+        c_cpu = a_cpu + b_cpu
     end = time.perf_counter()
     cpu_elapsed = end - start
-    cpu_times.append(cpu_elapsed)
+    cpu_times.append(cpu_elapsed / BENCH_NUM)
 
     print(f"{n:>10} | {cpu_elapsed:>10.6f}", end="")
 
@@ -45,12 +48,13 @@ for n in sizes:
 
     sync()
     start = time.perf_counter()
-    c_gpu = a_gpu + b_gpu
-    sync()
+    for i in range(0, BENCH_NUM):
+        c_gpu = a_gpu + b_gpu
+        sync()
     end = time.perf_counter()
 
     gpu_elapsed = end - start
-    gpu_times.append(gpu_elapsed)
+    gpu_times.append(gpu_elapsed / BENCH_NUM)
     print(f" | {gpu_elapsed:>10.6f}")
 
 def power_law(x, a, b):

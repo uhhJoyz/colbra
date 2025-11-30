@@ -2,3 +2,4 @@
 ns-3-dev
 ns-3-local
 mapping-algorithm/build
+benchmarks/.env

@@ -11,7 +11,7 @@ MAX_BYTES = 4 * 1024**3
 def _fits_in_memory_elems(n_elems):
     return (n_elems * 4) <= MAX_BYTES
 
-def benchmark_matvec(device="cpu", N=512, trials=10):
+def benchmark_matvec(device="cpu", N=512, trials=2048):
     if N > MAX_DIM:
         return {"op": "matvec", "device": device, "size": N, "skipped": True,
                 "reason": f"dimension {N} > MAX_DIM {MAX_DIM}"}

@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import torch
 
+BENCH_NUM = 2048
+
 if torch.cuda.is_available():
     device = torch.device("cuda")
     backend = "CUDA"
@@ -28,10 +30,11 @@ for n in sizes:
     a_cpu = np.random.rand(n).astype(np.float32)
     b_cpu = np.random.rand(n).astype(np.float32)
     start = time.perf_counter()
-    c_cpu = np.dot(a_cpu, b_cpu)
+    for i in range(0, BENCH_NUM):
+        c_cpu = np.dot(a_cpu, b_cpu)
     end = time.perf_counter()
     cpu_elapsed = end - start
-    cpu_times.append(cpu_elapsed)
+    cpu_times.append(cpu_elapsed / BENCH_NUM)
     print(f"{n:>10} | {cpu_elapsed:>10.6f}", end="")
 
     a_gpu = torch.rand(n, dtype=torch.float32, device=device)
@@ -39,14 +42,15 @@ for n in sizes:
     if device.type == "mps":
         torch.mps.synchronize()
     start = time.perf_counter()
-    c_gpu = torch.dot(a_gpu, b_gpu)
-    if device.type == "mps":
-        torch.mps.synchronize()
-    elif device.type == "cuda":
-        torch.cuda.synchronize()
+    for i in range(0, BENCH_NUM):
+        c_gpu = torch.dot(a_gpu, b_gpu)
+        if device.type == "mps":
+            torch.mps.synchronize()
+        elif device.type == "cuda":
+            torch.cuda.synchronize()
     end = time.perf_counter()
     gpu_elapsed = end - start
-    gpu_times.append(gpu_elapsed)
+    gpu_times.append(gpu_elapsed / BENCH_NUM)
     print(f" | {gpu_elapsed:>10.6f}")
 
 df = pd.DataFrame({
