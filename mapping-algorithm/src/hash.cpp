@@ -64,7 +64,7 @@ std::vector<u32> hashes_to_machine(std::vector<std::array<unsigned char, SHA256_
 {
   std::vector<u32> out_reducer_indices(in_hashes->size());
 
-  // #pragma omp parallel for
+  #pragma omp parallel for
   for (size_t i = 0; i < in_hashes->size(); i++)
   {
     size_t args[3] = {n_reducers, (size_t)partition_bounds,

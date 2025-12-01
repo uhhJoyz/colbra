@@ -4,11 +4,6 @@
 #include <vector>
 #include <math.h>
 
-#define OP_VEC_ADD 1u
-#define OP_VEC_DOT 2u
-#define OP_MAT_MAT 3u
-#define OP_MAT_VEC 4u
-
 u32 bank_level_est(size_t size, size_t operation)
 {
   switch (operation)
