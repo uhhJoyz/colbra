@@ -14,7 +14,7 @@ find_package(OpenMP REQUIRED)
 set(OPENSSL_USE_STATIC_LIBS TRUE)
 find_package(OpenSSL REQUIRED)
 
-add_executable(colbra src/main.cpp src/hash.cpp src/map.cpp stc/utils.cpp)
+add_executable(colbra src/main.cpp src/hash.cpp src/map.cpp src/utils.cpp src/model.cpp)
 
 if(OpenMP_CXX_FOUND)
   target_link_libraries(colbra PUBLIC OpenMP::OpenMP_CXX)

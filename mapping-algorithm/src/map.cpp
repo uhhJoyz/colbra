@@ -99,7 +99,6 @@ u32 partition_hw_strict(unsigned char *h, void *args)
   }
 
   long double val = (static_cast<long double>(*(reinterpret_cast<size_t *>(h))) / UINT64_MAX) / hardware_factor + hardware_offset;
-  std::cout << "Mapped value: " << val << " hw offset: " << hardware_offset << " opcode: " << operation_code << std::endl;
   size_t i = 0;
 
   // linear scan because n_reducers is small (in simulation)

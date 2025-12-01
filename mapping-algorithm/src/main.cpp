@@ -7,6 +7,8 @@
 #include "hash.h"
 #include "types.h"
 #include "map.h"
+#include "model.h"
+#include "utils.h"
 #define BENCH_SIZE 10000000
 
 int main(int argc, char *argv[])
@@ -47,6 +49,15 @@ int main(int argc, char *argv[])
                                10, 195, 170, 155, 205, 215, 220, 230};
 
   update_partitions(&partition_bounds, &weights, &runtimes);
+
+  std::vector<long double> machine_runtimes = model_machines(16u, machines, hardware_codes, gpu_est);
+  for (const auto &m : machine_runtimes)
+  {
+    std::cout << m << std::endl;
+  }
+
+  long double max_runtime = max_val(machine_runtimes);
+  std::cout << "Max runtime: " << max_runtime << std::endl;
 
   return 0;
 }

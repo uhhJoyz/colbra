@@ -34,3 +34,16 @@ void serialize_mappings(std::vector<u32> machines, std::string file_path)
       file << "\n";
   }
 }
+
+long double max_val(std::vector<long double> vec)
+{
+  long double max_val = vec[0];
+  for (size_t i = 1; i < vec.size(); i++)
+  {
+    if (vec[i] > max_val)
+    {
+      max_val = vec[i];
+    }
+  }
+  return max_val;
+}

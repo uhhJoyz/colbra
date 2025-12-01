@@ -2,9 +2,34 @@
 #include "types.h"
 
 #include <vector>
+#include <cstddef>
 #include <math.h>
 
-u32 bank_level_est(size_t size, size_t operation)
+std::vector<long double> model_machines(size_t n_reducers, std::vector<u32> machines, std::vector<size_t> op_codes,
+                                        long double (*model)(size_t size, size_t operation))
+{
+  std::vector<long double> runtimes(n_reducers, 0.0l);
+  std::vector<std::vector<size_t>> machine_ops(n_reducers, std::vector<size_t>(4));
+  for (size_t i = 0; i < machines.size(); i++)
+  {
+    machine_ops[machines[i]][op_codes[i]]++;
+  }
+
+  #pragma omp parallel for
+  for (size_t i = 0; i < n_reducers; i++)
+  {
+    long double time = 0.0l;
+    time += model(machine_ops[i][OP_VEC_ADD], OP_VEC_ADD);
+    time += model(machine_ops[i][OP_VEC_DOT], OP_VEC_DOT);
+    time += model(machine_ops[i][OP_MAT_MAT], OP_MAT_MAT);
+    time += model(machine_ops[i][OP_MAT_VEC], OP_MAT_VEC);
+    runtimes[i] = time;
+  }
+
+  return runtimes;
+}
+
+long double bank_level_est(size_t size, size_t operation)
 {
   switch (operation)
   {
@@ -22,25 +47,7 @@ u32 bank_level_est(size_t size, size_t operation)
   }
 }
 
-u32 bit_serial_est(size_t size, size_t operation)
-{
-  switch (operation)
-  {
-  case OP_VEC_ADD:
-    return 1.086e-03 * pow((float)size, 0.393);
-  case OP_VEC_DOT:
-    return 6.647e-04 * pow((float)size, 0.423);
-  case OP_MAT_VEC:
-    return 6.208e-02 * pow((float)size, 0.999);
-  case OP_MAT_MAT:
-    return 1.589e+01 * pow((float)size, 0.999);
-  default:
-    // return largest possible value if none selected
-    return -1u;
-  }
-}
-
-u32 gpu_est(size_t size, size_t operation)
+long double gpu_est(size_t size, size_t operation)
 {
   switch (operation)
   {
@@ -58,7 +65,7 @@ u32 gpu_est(size_t size, size_t operation)
   }
 }
 
-u32 cpu_est(size_t size, size_t operation)
+long double cpu_est(size_t size, size_t operation)
 {
   switch (operation)
   {
