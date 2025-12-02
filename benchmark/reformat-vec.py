@@ -6,7 +6,7 @@ def read_series(df):
     sizes = df["Size"].to_numpy()
     gpu_times = df["GPU_Time_s"].to_numpy() * 1000.0
     cpu_times = df["CPU_Time_s"].to_numpy() * 1000.0
-    return sizes, gpu_times, cpu_times
+    return sizes[4:], gpu_times[4:], cpu_times[4:]
 
 
 def fit_duo(sizes, gpu_times, cpu_times, name=None):
