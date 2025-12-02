@@ -1,8 +1,9 @@
 #include "openssl/sha.h"
-#include <iomanip>
-#include <sstream>
 #include <iostream>
 #include <vector>
+#include <array>
+#include <chrono>
+#include <string.h>
 
 #include "hash.h"
 #include "types.h"

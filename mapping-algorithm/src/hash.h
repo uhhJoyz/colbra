@@ -3,6 +3,7 @@
 #include "types.h"
 #include <vector>
 #include "openssl/sha.h"
+#include <string>
 
 // template <typename T>
 // class Hasher {
