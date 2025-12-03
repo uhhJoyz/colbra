@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ -z DOCKER_IMG ]]; then
+if [[ -z $DOCKER_IMG ]]; then
     export DOCKER_IMG=colbra:latest
     echo "DOCKER_IMG env var not set, using default: ${DOCKER_IMG}"
 fi
@@ -16,13 +16,13 @@ if [ -e "$DIR/$F1" ]; then
   docker cp $F1 temp_colbr:/app/$F1 > /dev/null 2>&1
 fi
 
-F2=./mapping-algorithm/build/partition_bounded_mappings.txt
+F2=partition_bounded_mappings.txt
 if [ -e "$DIR/$F2" ]; then
   echo "Copying $DIR/$F2 to /app/$F2"
   docker cp $F2 temp_colbr:/app/$F2 > /dev/null 2>&1
 fi
 
-F3="./mapping-algorithm/build/partition_hw_strict_mappings.txt"
+F3=partition_hw_strict_mappings.txt
 if [ -e "$DIR/$F3" ]; then
   echo "Copying $DIR/$F3 to /app/$F3"
   docker cp $F3 temp_colbr:/app/$F3 > /dev/null 2>&1

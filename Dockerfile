@@ -5,7 +5,7 @@ WORKDIR /app
 COPY ./mapreduce-sim.cc /app/ns-3-dev/scratch/mapreduce-sim.cc
 COPY ./ns-3-dev /app/ns-3-dev
 COPY ./entrypoint.sh /app/entrypoint.sh
-COPY ./mapping-algorithm/*.txt /app/
+COPY ./mapping-algorithm/build/*.txt /app/
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends python3 \

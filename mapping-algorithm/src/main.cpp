@@ -10,7 +10,7 @@
 #include "map.h"
 #include "model.h"
 #include "utils.h"
-#define BENCH_SIZE 65536
+#define BENCH_SIZE 65536 * 4
 #define BENCH_ITERS 100
 
 void benchmark_timings(u32 (*map)(unsigned char *, void *), std::string file_path)
@@ -47,30 +47,16 @@ void benchmark_timings(u32 (*map)(unsigned char *, void *), std::string file_pat
                                  &hardware_codes, map);
 
   auto end = std::chrono::high_resolution_clock::now();
-  std::cout << "Timing: "
+  std::cout << "Mapping Timing: "
             << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / float(BENCH_ITERS)
             << " ms" << std::endl;
 
   std::vector<long double> weights = initial_weights(n_reducers);
   std::vector<long double> runtimes = model_machines(n_reducers, machines, hardware_codes);
-  for (size_t i = 0; i < runtimes.size(); i++)
-    std::cout << "Runtime for machine " << i << ": " << runtimes[i] << std::endl;
 
   if (map == partition_bounded_map)
   {
     update_partitions(&partition_bounds, &weights, &runtimes);
-  }
-
-  std::vector<u32> machine_counts(n_reducers, 0);
-  for (size_t i = 0; i < partition_bounds.size(); i++)
-  {
-    machine_counts[machines[i]] += 1;
-  }
-
-  for (size_t i = 0; i < machine_counts.size(); i++)
-  {
-    std::cout << "Machine " << i << " has " << machine_counts[i]
-              << " assignments, weight: " << partition_bounds[i] << std::endl;
   }
 
   for (size_t i = 0; i < hardware_codes.size(); i++)
@@ -82,12 +68,23 @@ void benchmark_timings(u32 (*map)(unsigned char *, void *), std::string file_pat
                                &hardware_codes, map);
   runtimes = model_machines(n_reducers, machines, hardware_codes);
   serialize_mappings(machines, file_path);
+
+  long double max_time = -1l;
+  for (size_t i = 0; i < runtimes.size(); i++)
+    if (runtimes[i] > max_time) {
+      max_time = runtimes[i];
+      // std::cout << "Runtime for machine " << i << ": " << runtimes[i] << std::endl;
+    }
+  std::cout << "Accelerator Runtime: " << max_time << " ms" << std::endl;
 }
 
 int main(int argc, char *argv[])
 {
+  std::cout << "----------------Naive mapping----------------" << std::endl;
   benchmark_timings(naive_map, "naive_mappings.txt");
+  std::cout << "----------------Partition bounded mappings----------------" << std::endl;
   benchmark_timings(partition_bounded_map, "partition_bounded_mappings.txt");
+  std::cout << "----------------Strict hardware-aware mapping----------------" << std::endl;
   benchmark_timings(partition_hw_strict, "partition_hw_strict_mappings.txt");
   return 0;
 }
